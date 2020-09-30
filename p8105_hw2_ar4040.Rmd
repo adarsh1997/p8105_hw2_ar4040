@@ -67,3 +67,17 @@ left_join(precip_df, month_df, by = "month")
 
 The dataset contains information from the Mr.Trashwheel trash collector in Baltimore. As trash enters the inner harbor, the trashwheel collects trash and stores it in a dumpster. The dataset contains information on year, month, and trash collected, include some specific kinds of trash. There are a total of `r nrow(trashwheel_df)`  rows in our final dataset. Additional data sheets include month precipitation data
 
+
+## Problem 2
+
+Read the NYC transit data
+
+```{r}
+transit_df = read.csv("./data/nyc_transit.csv")%>%
+  janitor::clean_names()%>%
+  select(line, station_name, station_latitude, station_longitude, route1,route2,
+         route3,route4,route5,route6,route7,route8,route9,route10,route11, entry,
+         vending, entrance_type, ada)
+```
+
+
