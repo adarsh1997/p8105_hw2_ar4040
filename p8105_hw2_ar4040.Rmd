@@ -77,7 +77,32 @@ transit_df = read.csv("./data/nyc_transit.csv")%>%
   janitor::clean_names()%>%
   select(line, station_name, station_latitude, station_longitude, route1,route2,
          route3,route4,route5,route6,route7,route8,route9,route10,route11, entry,
-         vending, entrance_type, ada)
+         vending, entrance_type, ada)%>%
+  mutate(entry = recode(entry,"YES"= TRUE,"NO"=FALSE))
 ```
 
+Count the number of distinct stations
 
+```{r}
+
+distinct(transit_df,line,station_name)%>%count()
+```
+There are 465 distinct stations
+
+Count the number of distinct stations that are ADA compliant
+
+```{r}
+filter(transit_df, ada == TRUE)%>%distinct(line,station_name)%>%count()
+```
+There are 73 distinct stations
+
+Now to count the proportion of station entrances/exits without vending that allow entry
+
+```{r}
+
+Numerator = filter(transit_df, vending == "NO" & entry == TRUE)%>%distinct(line,station_name)%>%count()
+Denomenator = filter(transit_df, vending == "NO")%>%distinct(line,station_name)%>%count()
+proportion = Numerator/Denomenator
+```
+
+Hence, the proportion of station entrances/exits without vending that allow entry is 0.43
