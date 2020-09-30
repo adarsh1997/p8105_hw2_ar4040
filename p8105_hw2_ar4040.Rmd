@@ -11,14 +11,23 @@ Loading tidyverse library:
 
 ```{r libraries}
 library(tidyverse)
+library(readxl)
 ```
 
 
 ## Problem 1
 
-Read the trash wheel collection csv file
+Read the trash wheel collection dataset
 
 ```{r}
-problem1_data = read_csv(file = "./data/trash_wheel_collection.xlsx")
+trashwheel_df = read_xlsx("./data/trash_wheel_collection.xlsx", 
+  sheet = "Mr. Trash Wheel",
+  range = cell_cols("A:N")) %>%
+  janitor::clean_names() %>%
+  drop_na(dumpster) %>%
+  mutate(
+    sports_balls = round(sports_balls), 
+    sports_balls = as.integer(sports_balls)
+  )
 ```
 
